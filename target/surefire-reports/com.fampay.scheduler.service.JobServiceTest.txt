@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.fampay.scheduler.service.JobServiceTest
+-------------------------------------------------------------------------------
+Tests run: 8, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.249 s -- in com.fampay.scheduler.service.JobServiceTest

@@ -1,0 +1,37 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.0
+    container_name: scheduler-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: schedules
+      MYSQL_USER: nfcpay
+      MYSQL_PASSWORD: nfcpay.123
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./initScripts/mysql/dump.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  scheduler:
+    build: .
+    container_name: scheduler-app
+    depends_on:
+      mysql:
+        condition: service_healthy
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/schedules
+      SPRING_DATASOURCE_USERNAME: nfcpay
+      SPRING_DATASOURCE_PASSWORD: nfcpay.123
+      SERVER_PORT: 8081
+    ports:
+      - "8081:8081"
+      - "9090:9090"
+    restart: unless-stopped
+

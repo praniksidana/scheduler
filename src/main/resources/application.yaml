@@ -1,0 +1,53 @@
+server:
+  port: 8081
+tracing:
+ enabled: false
+zombies:
+  delta: 600000
+jakarta:
+  persistence:
+    jdbc:
+      url: jdbc:mysql://localhost:3306/schedules
+
+spring:
+  profiles:
+    active: master
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/schedules
+    username: nfcpay
+    password: nfcpay.123
+    hikari:
+      data-source-properties:
+        jdbc-dialect: mysql
+        jdbc-url: jdbc:mysql://localhost:3306/schedules
+  jpa:
+    generate-ddl: 'true'
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate.dialect: org.hibernate.dialect.MySQLDialect
+management:
+  server:
+    port: 9091  # this must be under 'management', not 'metrics'
+  endpoints:
+    enabled-by-default: true
+    web:
+      exposure:
+        include: "*"
+  endpoint:
+    health:
+      enabled: true
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+
+logging:
+  level:
+    org:
+      springframework: INFO
